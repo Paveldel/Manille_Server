@@ -8,7 +8,7 @@ const amountOfPointsToWin = 101;
 
 interface GameInfo {
     indexOfPlayer: number,
-    gameState: string,
+    gameState: number,
     players: string[],
     hand: Card[],
     firstTeamPoints: number,
@@ -25,11 +25,10 @@ enum GameState {
     WaitingForTrump,
     InRound,
     TrickEnded,
-    Ended
+    GameEnded
 }
 
-class _Game {
-
+class Game {
     private readonly _id: string = uuidv4(); 
     private _gameState: GameState = GameState.WaitingForPlayers;
     private _players: Player[] = [];
@@ -48,13 +47,14 @@ class _Game {
         return this._id;
     }
 
-    public joinPlayer(username: string) {
+    public joinPlayer(username: string): string {
         if (this._players.find(p => p.username === username)) {
             throw new Error("This player is already in the game");
         }
         const player: Player = new Player(username);
         this._players.push(player);
         if (this._players.length === amountOfPlayersInGame) this.startRound();
+        return player.id;
     }
 
     private startRound(): void {
@@ -75,7 +75,7 @@ class _Game {
                 deck.push(new Card(rank as Rank, suit as Suit));
             }
         }
-        _Game.shuffle(deck);
+        Game.shuffle(deck);
         let index: number = 0;
         while (deck.length > 0) {
             this._players[index].addCardToHand(deck.pop()!);
@@ -103,16 +103,18 @@ class _Game {
     }
     
     public makeMove(index: number, playerId: string): void {
+        if (this._gameState !== GameState.InRound) throw Error("Cannot play cards right now");
         const player = this._players[this._nextPlayer];
         if (player.id != playerId) {
             throw new Error("It's not your turn");
         }
         const card = player.getCardFromHand(index);
         this.placeCard(player, card);
+        player.removeFromHand(card);
+        this._nextPlayer = (this._nextPlayer + 1) % amountOfPlayersInGame;
         if (this._cardsInThisTrick.length === amountOfPlayersInGame) {
             this.endTrick();
         }
-        this._nextPlayer = (this._nextPlayer + 1) % amountOfPlayersInGame;
     }
 
     private placeCard(player: Player, card: Card): void {
@@ -153,7 +155,8 @@ class _Game {
         for (const card of this._cardsInThisTrick) {
             teamWinner.push(card);
         }
-        if (this._players[0].getCardFromHand.length < 1) {
+        this._nextPlayer = this._trickWinner;
+        if (this._players[0].getCardsInHand().length < 1) {
             this.endRound();
         }
     }
@@ -164,7 +167,13 @@ class _Game {
         if (firstPoints > secondPoints) this._firstTeamPoints += firstPoints - draw;
         if (firstPoints < secondPoints) this._secondTeamPoints += secondPoints - draw;
         if (firstPoints < amountOfPointsToWin || secondPoints < amountOfPointsToWin) this.startRound();
-        else this._gameState = GameState.Ended;
+        else this._gameState = GameState.GameEnded;
+    }
+
+    public nextTrick(): void {
+        if (this._gameState != GameState.TrickEnded) throw Error("Cannot end trick right now");
+        this._gameState = GameState.InRound;
+        this._cardsInThisTrick = [];
     }
 
     public getInfoForPlayer(playerId: string): GameInfo {
@@ -174,7 +183,7 @@ class _Game {
             dealerIndex: this._dealerIndex,
             firstTeamPoints: this._firstTeamPoints,
             secondTeamPoints: this._secondTeamPoints,
-            gameState: this._gameState.toString(),
+            gameState: this._gameState,
             hand: player.getCardsInHand()!,
             indexOfPlayer: this._players.indexOf(player),
             nextPlayer: this._nextPlayer,
@@ -185,3 +194,5 @@ class _Game {
         } as GameInfo;
     }
 }
+
+export { Game, GameState }

@@ -27,11 +27,12 @@ class Player {
     }
 
     public removeFromHand(card: Card): void {
+        if (!this._hand.includes(card)) return;
         this._hand.splice(this._hand.indexOf(card), 1);
     }
 
     public getCardsInHand(): Card[] {
-        return this._hand;
+        return [...this._hand];
     }
 
     public addCardToHand(card: Card): void {
