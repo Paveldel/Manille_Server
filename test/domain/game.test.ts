@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 import { describe, it, expect } from "vitest";
 import { Game, GameState } from "../../src/domain/Game.ts";
 import { Suit } from "../../src/domain/Card.ts";
