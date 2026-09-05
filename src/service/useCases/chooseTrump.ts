@@ -1,5 +1,5 @@
-import { Suit } from "../../domain/Card.ts";
-import { Game } from "../../domain/Game.ts";
+import { Suit } from "@/domain/Card.ts";
+import { Game } from "@/domain/Game.ts";
 import { Games } from "../interfaces/persistence.ts";
 
 class ChooseTrump {

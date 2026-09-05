@@ -1,4 +1,4 @@
-import { Game } from "../../domain/Game.ts";
+import { Game } from "@/domain/Game.ts";
 import { Games } from "../interfaces/persistence.ts";
 
 class CreateGame {

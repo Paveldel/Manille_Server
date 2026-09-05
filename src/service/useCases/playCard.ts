@@ -1,6 +1,6 @@
-import { Card } from "../../domain/Card.ts";
-import { Game } from "../../domain/Game.ts";
-import { Player } from "../../domain/Player.ts";
+import { Card } from "@/domain/Card.ts";
+import { Game } from "@/domain/Game.ts";
+import { Player } from "@/domain/Player.ts";
 import { Games } from "../interfaces/persistence.ts";
 
 class PlayCard {

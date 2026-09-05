@@ -1,4 +1,4 @@
-import { Game, type GameInfo } from "../../domain/Game.ts";
+import { Game, type GameInfo } from "@/domain/Game.ts";
 import { Games } from "../interfaces/persistence.ts";
 
 class GetGameDetails {
