@@ -47,6 +47,10 @@ class Game {
         return this._id;
     }
 
+    public getPlayerById(id: string): Player | null {
+        return this._players.find(p => p.id === id) || null;
+    }
+
     public joinPlayer(username: string): string {
         if (this._players.find(p => p.username === username)) {
             throw new Error("This player is already in the game");
@@ -117,7 +121,7 @@ class Game {
         }
     }
 
-    private placeCard(player: Player, card: Card): void {
+    public placeCard(player: Player, card: Card): void {
         if (!this.isAllowedToPlay(player, card)) throw new Error("You aren't allowed to play that card");
         this._cardsInThisTrick.push(card);
         if (this.cardIsHigher(card)) {
@@ -195,4 +199,4 @@ class Game {
     }
 }
 
-export { Game, GameState }
+export { Game, GameState, type GameInfo }
