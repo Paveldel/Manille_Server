@@ -11,7 +11,7 @@ class GetGameDetails {
     public async execute(gameId: string, playerId: string): Promise<GameInfo> {
         const game: Game = await this._games.loadGame(gameId);
 
-        return game.getInfoForPlayer(playerId);
+        return game.getInfoForPlayer(playerId.trim());
     }
 }
 

@@ -11,9 +11,9 @@ export async function POST(
 
   const createGame = new CreateGame(dependencies["games"]);
 
-  const gameId = await createGame.execute(username);
+  const { gameId, playerId } = await createGame.execute(username);
 
-  return new Response(JSON.stringify({ gameId }), {
+  return new Response(JSON.stringify({ gameId, playerId }), {
     status: 201,
     headers: { 'Content-Type': 'application/json' }
   });

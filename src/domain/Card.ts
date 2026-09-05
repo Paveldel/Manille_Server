@@ -9,11 +9,25 @@ enum Rank {
     Seven = "7",
 }
 
+function getRank(some: string): Rank {
+    if (Object.values(Rank).includes(some as Rank)) {
+        return some as Rank;
+    }
+    return Rank[some as keyof typeof Rank];
+}
+
 enum Suit {
     Spades = "♠",
     Hearts = "♥",
     Clubs = "♣",
     Diamonds = "♦",
+}
+
+function getSuit(some: string): Suit {
+    if (Object.values(Suit).includes(some as Suit)) {
+        return some as Suit;
+    }
+    return Suit[some as keyof typeof Suit];
 }
 
 const Values: { [key: string]: number } = {
@@ -54,4 +68,4 @@ class Card {
     }
 }
 
-export { Rank, Suit, Card }
+export { Rank, Suit, Card, getSuit, getRank }

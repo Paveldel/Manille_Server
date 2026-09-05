@@ -1,8 +1,8 @@
 // deno-lint-ignore-file
 import { describe, it, expect } from "vitest";
-import { Game, GameState } from "@/domain/Game.ts";
-import { Player } from "@/domain/Player.ts";
-import { Suit } from "@/domain/Card.ts";
+import { Game, GameState } from "../../src/domain/Game.ts";
+import { Player } from "../../src/domain/Player.ts";
+import { Suit } from "../../src/domain/Card.ts";
 
 const playCardForPlayer = (game: Game, id: string) => {
     for (let i = 0; i < 8; i++) {

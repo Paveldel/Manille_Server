@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { dependencies } from "@/main/dependencies.ts";
 import { ChooseTrump } from "@/service/useCases/chooseTrump.ts";
-import { Suit } from "@/domain/Card.ts";
+import { getSuit } from "@/domain/Card.ts";
 
 export async function POST(
   request: NextRequest,
@@ -10,12 +10,14 @@ export async function POST(
   const { gameId } = await params;
   const body = await request.json();
 
-  const playerId = body.playerId;
+  const authHeader = request.headers.get("authorization")!;
+  const playerId = authHeader.split(" ")[1];
+  
   const suit = body.suit;
   
   const chooseTrump = new ChooseTrump(dependencies["games"]);
 
-  const gameDetails = await chooseTrump.execute(gameId, playerId, Suit[suit as keyof typeof Suit]);
+  await chooseTrump.execute(gameId, playerId, getSuit(suit));
   
-  return NextResponse.json(gameDetails);
+  return NextResponse.json({});
 }

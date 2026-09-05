@@ -9,9 +9,9 @@ export async function GET(
   { params }: { params: Promise<{ gameId: string }> },
 ) {
   const { gameId } = await params;
-  const body = await request.json();
 
-  const playerId = body.playerId;
+  const authHeader = request.headers.get("authorization")!;
+  const playerId = authHeader.split(" ")[1];
   
   const getDetails = new GetGameDetails(dependencies["games"]);
 
@@ -27,20 +27,14 @@ export async function POST(
   const { gameId } = await params;
   const body = await request.json();
 
-  const playerId = body.playerId;
-  const cardChars = body.card;
+  const authHeader = request.headers.get("authorization")!;
+  const playerId = authHeader.split(" ")[1];
 
-  const [suitChar, ...restArray] = cardChars;
-  const rankChars: string = restArray.join('');
-
-  const suit = Suit[suitChar as keyof typeof Suit];
-  const rank = Rank[rankChars as keyof typeof Rank];
-
-  const card = new Card(rank, suit);
+  const card: number = body.card;
   
   const playCard = new PlayCard(dependencies["games"]);
 
-  const gameDetails = await playCard.execute(gameId, playerId, card);
+  await playCard.execute(gameId, playerId, card);
   
-  return NextResponse.json(gameDetails);
+  return NextResponse.json({});
 }
