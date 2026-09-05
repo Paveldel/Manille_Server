@@ -1,7 +1,7 @@
 import { Game } from "@/domain/Game.ts";
 import { Games } from "../interfaces/persistence.ts";
 
-class JoinGame {
+class NextTrick {
     private readonly _games: Games;
 
     constructor(games: Games) {
@@ -17,4 +17,4 @@ class JoinGame {
     }
 }
 
-export { JoinGame }
+export { NextTrick }

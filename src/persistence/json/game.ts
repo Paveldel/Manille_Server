@@ -3,6 +3,7 @@ import { Game } from '@/domain/Game.ts';
 import { Games } from "@/service/interfaces/persistence.ts";
 
 async function saveGame(game: Game) : Promise<void> {
+    fs.mkdir('storage/games/', { recursive: true });
     await fs.writeFile('storage/games/' + game.id, JSON.stringify(game));
 }
 
