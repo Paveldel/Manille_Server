@@ -167,14 +167,17 @@ class Game {
         const secondPoints = this._secondTeamCards.reduce((sum, cur) => sum + cur.value, 0);
         if (firstPoints > secondPoints) this._firstTeamPoints += firstPoints - draw;
         if (firstPoints < secondPoints) this._secondTeamPoints += secondPoints - draw;
-        if (firstPoints < amountOfPointsToWin || secondPoints < amountOfPointsToWin) this.startRound();
+        if (firstPoints < amountOfPointsToWin || secondPoints < amountOfPointsToWin) this._gameState = GameState.TrickEnded;
         else this._gameState = GameState.GameEnded;
     }
 
     public nextTrick(): void {
         if (this._gameState != GameState.TrickEnded) throw Error("Cannot end trick right now");
-        this._gameState = GameState.InRound;
-        this._cardsInThisTrick = [];
+        if (this._players[0].getCardsInHand().length < 1) this.startRound();
+        else {
+            this._gameState = GameState.InRound;
+            this._cardsInThisTrick = [];
+        }
     }
 
     public getInfoForPlayer(playerId: string): GameInfo {

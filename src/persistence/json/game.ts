@@ -2,10 +2,9 @@ import fs from 'node:fs/promises';
 import { Game } from '@/domain/Game.ts';
 import { Games } from "@/service/interfaces/persistence.ts";
 import { Player } from '@/domain/Player.ts';
-import { Card, Rank, Suit, getSuit, getRank } from '@/domain/Card.ts';
+import { Card, getSuit, getRank } from '@/domain/Card.ts';
 
 async function saveGame(game: Game) : Promise<void> {
-    console.log(JSON.stringify(game));
     await fs.mkdir('storage/games/', { recursive: true });
     await fs.writeFile('storage/games/' + game.id, JSON.stringify(game));
 }

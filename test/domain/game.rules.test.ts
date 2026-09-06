@@ -87,8 +87,8 @@ describe("Game critical rule tests", () => {
             playCardForPlayer(game, ids[(info.nextPlayer + 1) % 4]);
             playCardForPlayer(game, ids[(info.nextPlayer + 2) % 4]);
             playCardForPlayer(game, ids[(info.nextPlayer + 3) % 4]);
+            game.nextTrick();
             info = game.getInfoForPlayer(ids[0]);
-            if (i !== 7) game.nextTrick();
         }
 
         expect(info.gameState).toEqual(GameState.WaitingForTrump);
