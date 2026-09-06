@@ -13,7 +13,9 @@ function getRank(some: string): Rank {
     if (Object.values(Rank).includes(some as Rank)) {
         return some as Rank;
     }
-    return Rank[some as keyof typeof Rank];
+    let rank = Rank[some as keyof typeof Rank];
+    if (rank === undefined) rank = Rank.Ten;
+    return rank;
 }
 
 enum Suit {
@@ -27,7 +29,10 @@ function getSuit(some: string): Suit {
     if (Object.values(Suit).includes(some as Suit)) {
         return some as Suit;
     }
-    return Suit[some as keyof typeof Suit];
+    let suit = Suit[some as keyof typeof Suit];
+    if (suit === undefined) suit = Suit.Spades;
+    console.log(suit);
+    return suit;
 }
 
 const Values: { [key: string]: number } = {

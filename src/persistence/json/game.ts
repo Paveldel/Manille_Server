@@ -12,8 +12,8 @@ async function saveGame(game: Game) : Promise<void> {
 function jsonToCard(json: { [key: string]: string; }) {
     const rank = getRank(json["_rank"]);
     const suit = getSuit(json["_suit"]);
-
-    return new Card(rank, suit);
+    const card = new Card(rank, suit);
+    return card;
 }
 
 async function loadGame(id: string) : Promise<Game> {
@@ -22,7 +22,7 @@ async function loadGame(id: string) : Promise<Game> {
     json["_players"] = json["_players"].map(p => {
         let player: any = { ...p };
         player["_hand"] = (player["_hand"] as unknown as { [key: string]: string; }[]).map(jsonToCard);
-        return Object.assign(new Player(""), p)
+        return Object.assign(new Player(""), player);
     });
     json["_cardsInThisTrick"] = (json["_cardsInThisTrick"] as unknown as { [key: string]: string; }[]).map(jsonToCard);
     json["_secondTeamCards"] = (json["_secondTeamCards"] as unknown as { [key: string]: string; }[]).map(jsonToCard);
