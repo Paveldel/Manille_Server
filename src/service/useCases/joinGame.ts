@@ -9,7 +9,12 @@ class JoinGame {
     }
 
     public async execute(gameId: string, username: string): Promise<string> {
-        const game: Game = await this._games.loadGame(gameId);
+        let game: Game;
+        try {
+            game = await this._games.loadGame(gameId);
+        } catch (_) {
+            throw new Error("Couldn't find game with that Id");
+        }
 
         const playerId: string = game.joinPlayer(username);
 

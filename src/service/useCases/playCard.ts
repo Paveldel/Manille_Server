@@ -9,7 +9,12 @@ class PlayCard {
     }
 
     public async execute(gameId: string, playerId: string, index: number): Promise<void> {
-        const game: Game = await this._games.loadGame(gameId);
+        let game: Game;
+        try {
+            game = await this._games.loadGame(gameId);
+        } catch (_) {
+            throw new Error("Couldn't find game with that Id");
+        }
 
         game.makeMove(index, playerId);
 

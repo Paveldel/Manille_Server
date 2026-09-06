@@ -9,7 +9,12 @@ class NextTrick {
     }
 
     public async execute(gameId: string): Promise<void> {
-        const game: Game = await this._games.loadGame(gameId);
+        let game: Game;
+        try {
+            game = await this._games.loadGame(gameId);
+        } catch (_) {
+            throw new Error("Couldn't find game with that Id");
+        }
 
         game.nextTrick();
 
