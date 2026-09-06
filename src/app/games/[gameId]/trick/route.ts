@@ -6,11 +6,15 @@ export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ gameId: string }> },
 ) {
-  const { gameId } = await params;
-
-  const nextTrick = new NextTrick(dependencies["games"]);
-
-  await nextTrick.execute(gameId);
-
-  return NextResponse.json({ });
+  try {
+    const { gameId } = await params;
+  
+    const nextTrick = new NextTrick(dependencies["games"]);
+  
+    await nextTrick.execute(gameId);
+  
+    return NextResponse.json({ });
+  } catch (error) {
+    return new Response(error + "", { status: 400 });
+  }
 }
