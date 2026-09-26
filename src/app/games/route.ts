@@ -15,8 +15,7 @@ export async function POST(
     const { gameId, playerId } = await createGame.execute(username);
   
     return new Response(JSON.stringify({ gameId, playerId }), {
-      status: 201,
-      headers: { 'Content-Type': 'application/json' }
+      status: 201
     });
   } catch (error) {
     return new Response(error + "", { status: 400 });

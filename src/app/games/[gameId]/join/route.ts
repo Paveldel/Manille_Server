@@ -17,8 +17,7 @@ export async function POST(
         const playerId = await joinGame.execute(gameId, username);
     
         return new Response(JSON.stringify({ playerId }), {
-            status: 201,
-            headers: { 'Content-Type': 'application/json' }
+            status: 201
         });
     } catch (error) {
         return new Response(error + "", { status: 400 });
