@@ -1,5 +1,4 @@
 import { Card, Suit, Rank } from "./Card.ts";
-import { v4 as uuidv4 } from 'uuid';
 import { Player } from "./Player.ts";
 
 const amountOfPlayersInGame = 4;
@@ -29,7 +28,7 @@ enum GameState {
 }
 
 class Game {
-    private readonly _id: string = uuidv4(); 
+    private readonly _id: string = Math.random().toString(36).slice(2, 8).toUpperCase(); 
     private _gameState: GameState = GameState.WaitingForPlayers;
     private _players: Player[] = [];
     private _firstTeamPoints: number = 0;
