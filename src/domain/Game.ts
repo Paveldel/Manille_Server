@@ -9,6 +9,7 @@ interface GameInfo {
     indexOfPlayer: number,
     gameState: number,
     players: string[],
+    localPlayer: string,
     hand: Card[],
     firstTeamPoints: number,
     secondTeamPoints: number,
@@ -139,7 +140,7 @@ class Game {
     }
 
     private cardIsHigher(card: Card): boolean {
-        if (this._cardsInThisTrick.length === 0) return true;
+        if (this._cardsInThisTrick.length === 1) return true;
         if (card.suit != this._trump && card.suit != this._cardsInThisTrick[0].suit) {
             return false;
         }
@@ -155,7 +156,6 @@ class Game {
         for (const card of this._cardsInThisTrick) {
             teamWinner.push(card);
         }
-        this._nextPlayer = this._trickWinner;
         if (this._players[0].getCardsInHand().length < 1) {
             this.endRound();
         }
@@ -166,12 +166,13 @@ class Game {
         const secondPoints = this._secondTeamCards.reduce((sum, cur) => sum + cur.value, 0);
         if (firstPoints > secondPoints) this._firstTeamPoints += firstPoints - draw;
         if (firstPoints < secondPoints) this._secondTeamPoints += secondPoints - draw;
-        if (firstPoints < amountOfPointsToWin || secondPoints < amountOfPointsToWin) this._gameState = GameState.TrickEnded;
+        if (this._firstTeamPoints < amountOfPointsToWin && this._secondTeamPoints < amountOfPointsToWin) this._gameState = GameState.TrickEnded;
         else this._gameState = GameState.GameEnded;
     }
 
     public nextTrick(): void {
         if (this._gameState != GameState.TrickEnded) throw Error("Cannot end trick right now");
+        this._nextPlayer = this._trickWinner;
         if (this._players[0].getCardsInHand().length < 1) this.startRound();
         else {
             this._gameState = GameState.InRound;
@@ -191,6 +192,7 @@ class Game {
             indexOfPlayer: this._players.indexOf(player),
             nextPlayer: this._nextPlayer,
             players: this._players.map(p => p.username),
+            localPlayer: player.username,
             trick: this._cardsInThisTrick,
             trump: this._trump,
             winner: this._trickWinner
