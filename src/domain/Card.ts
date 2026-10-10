@@ -31,7 +31,6 @@ function getSuit(some: string): Suit {
     }
     let suit = Suit[some as keyof typeof Suit];
     if (suit === undefined) suit = Suit.Spades;
-    console.log(suit);
     return suit;
 }
 
