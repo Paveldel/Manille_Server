@@ -35,14 +35,14 @@ function getSuit(some: string): Suit {
 }
 
 const Values: { [key: string]: number } = {
-    Ten: 5,
-    Ace: 4,
-    King: 3,
-    Queen: 2,
-    Jack: 1,
-    Nine: 0,
-    Eight: 0,
-    Seven: 0,
+    "10": 5,
+    "A": 4,
+    "K": 3,
+    "Q": 2,
+    "J": 1,
+    "9": 0,
+    "8": 0,
+    "7": 0,
 }
 
 class Card {
@@ -56,7 +56,7 @@ class Card {
     }
 
     get value(): number {
-        return Values[this._rank.toString()];
+        return Values[getRank(this._rank)];
     }
 
     get suit(): Suit {
